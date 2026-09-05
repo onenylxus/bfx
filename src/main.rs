@@ -1,4 +1,5 @@
 use std::io::{ self, Read, Write };
+use std::path::Path;
 
 fn bf(source: &str) {
     let mut cells = [0u8; 32768];
@@ -89,7 +90,23 @@ fn main() -> io::Result<()> {
         std::process::exit(1);
     }
 
-    let source = std::fs::read_to_string(&args[1])?;
+    let input = &args[1];
+    let path = Path::new(input);
+
+    if !path.exists() || !path.is_file() {
+        eprintln!("Error: File '{}' does not exist or is not a file.", input);
+        std::process::exit(1);
+    }
+    match path.extension().and_then(|ext| ext.to_str()) {
+        Some("b" | "bf" | "bfx") => {}
+
+        _ => {
+            eprintln!("Error: file must end with .b, .bf, or .bfx");
+            std::process::exit(1);
+        }
+    }
+
+    let source = std::fs::read_to_string(&input)?;
     bf(&source);
     Ok(())
 }
