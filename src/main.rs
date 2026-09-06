@@ -2,7 +2,7 @@ use std::io::{ self, Read, Write };
 use std::path::Path;
 
 fn bf(source: &str) {
-    let mut cells = [0u8; 32768];
+    let mut cells = [0u8; 30000];
     let mut ptr = 0usize;
     let mut pc = 0usize;
 
